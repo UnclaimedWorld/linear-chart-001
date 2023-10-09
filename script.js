@@ -139,7 +139,37 @@ svg.attr('height', totalHeight + 'px');
 const yScale = d3.scaleLinear([0,250], [height,0]);
 const xScale = d3.scaleTime([new Date('2023-05-15T00:00:00+05:00'), new Date('2023-05-15T23:00:00+05:00')], [0, width]);
 
+const appendSingle = (where, whatFn) => {
+  where.node().append(whatFn());
+}
+class LeftAxis {
+  constructor(scale) {
+    this.root = d3.create('svg:g');
+    this.setStyles();
+    this.setScale(scale);
+  }
+  setScale(scale) {
+    this.root
+      .style('transform', `translate(${width+marginLeft}px, ${marginTop}px)`)
+      .call(d3.axisLeft().scale(scale).ticks(5).tickSize(width))
+  }
+  setStyles() {
+    this.root.attr('class', 'left-axis')
+      .selectAll('line').attr('stroke', '#E1E1E1')
+      .select('.domain').remove()
+    this.root.selectAll('text').style('transform', 'translateX(-15px)')
+  }
+  getNode() {
+    return this.root.node();
+  }
+}
+
 const appendLeftAxis = () => {
+  const leftAxis = new LeftAxis(yScale);
+  appendSingle(svg, () => leftAxis.getNode());
+}
+
+const appendLeftAxis1 = () => {
   const g = svg.append('g');
     g.attr('class', 'left-axis')
       .style('transform', `translate(${width+marginLeft}px, ${marginTop}px)`)
@@ -389,4 +419,8 @@ const dataWrapper = svg.append('g').style('transform', `translate(${marginLeft}p
 dataWrapper.append('rect').attr('width', width).attr('height',height).attr('fill','transparent');
 dataLines.forEach(appendDataLines);
 appendTooltip();
-appendLegend()
+appendLegend();
+
+const redrawWithData = (data) => {
+
+}
