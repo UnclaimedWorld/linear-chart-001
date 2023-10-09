@@ -140,12 +140,13 @@ const yScale = d3.scaleLinear([0,250], [height,0]);
 const xScale = d3.scaleTime([new Date('2023-05-15T00:00:00+05:00'), new Date('2023-05-15T23:00:00+05:00')], [0, width]);
 
 const appendLeftAxis = () => {
-    svg.append('g')
-        .attr('class', 'left-axis')
-        .style('transform', `translate(${width+marginLeft-15}px, ${marginTop}px)`)
-        .call(d3.axisLeft().scale(yScale).ticks(5).tickSize(width))
-        .selectAll('line').attr('stroke', '#E1E1E1')
-        .select('.domain').remove()
+  const g = svg.append('g');
+    g.attr('class', 'left-axis')
+      .style('transform', `translate(${width+marginLeft}px, ${marginTop}px)`)
+      .call(d3.axisLeft().scale(yScale).ticks(5).tickSize(width))
+      .selectAll('line').attr('stroke', '#E1E1E1')
+      .select('.domain').remove()
+    g.selectAll('text').style('transform', 'translateX(-15px)')
 };
 // unused temporary
 const appendBottomAxis1 = () => {
@@ -194,14 +195,15 @@ class DataLine {
 }
 const dataLines = [
     new DataLine('Входящие', 'accepted', '#397AF5'),
-    new DataLine('Обработанные', 'notaccepted', '#00CC56')
+    new DataLine('Обработанные', 'notaccepted', '#00CC56'),
 ]
 
 const [min,max] = d3.extent(data, d => new Date(d.date).getHours());
 const delta = max - min;
 
 const appendTooltip = () => {
-    const initTooltip = () => {
+  const tooltipHeight = 52 + dataLines.length * 20 + dataLines.length * (4 - 1) + 16;
+  const initTooltip = () => {
         const yOffset = 14;
         const circle1 = dataWrapper.append('circle')
             .style('display', 'none')
@@ -219,12 +221,21 @@ const appendTooltip = () => {
         tooltip
             .style('opacity', '0')
             .attr('pointer-events', 'none')
-        tooltip.append('path')
-            .attr('d', 'M6 0C2.68629 0 0 2.68629 0 6V106C0 109.314 2.68629 112 6 112H90.8155C90.8833 112.115 90.9645 112.227 91.0599 112.334L100.01 122.335C100.805 123.223 102.195 123.223 102.99 122.335L111.94 112.334C112.035 112.227 112.117 112.115 112.184 112H197C200.314 112 203 109.314 203 106V6C203 2.68629 200.314 0 197 0H6Z')
-            .attr('opacity', 0.92)
-            .attr('fill-rule', 'evenodd')
-            .attr('clip-rule', 'evenodd')
-            .attr('fill', '#454142')
+        const wrapG = tooltip.append('g')
+        wrapG
+          .attr('fill', '#454142')
+          .attr('opacity', 0.92)
+          .append('path')
+          .attr('d', 'M9.46326 13.3346C10.2583 14.223 11.649 14.223 12.444 13.3346L21.3937 3.33372C22.5466 2.0454 21.6322 0 19.9033 0H2.00392C0.275054 0 -0.639356 2.0454 0.513553 3.33372L9.46326 13.3346Z')
+          .attr('transform', `translate(${91},${tooltipHeight - 3})`) // 91 - половина ширины rect минус половина ширины ярлычка path
+         wrapG
+          .append('rect')
+          .attr('rx', 6)
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('width', 203)
+          .attr('height', tooltipHeight)
+            
         tooltip.style('letter-spacing', '0.07px')
             .style('font-weight', '500')
             .style('font-size', '14px')
@@ -232,7 +243,7 @@ const appendTooltip = () => {
         const tooltipTitle = tooltip.append('text')
         tooltipTitle
             .attr('x', 102)
-            .attr('y', yOffset+16)
+            .attr('y', yOffset + 16)
             .style('text-anchor', 'middle')
         tooltip.append('rect')
             .attr('x', 16)
@@ -261,7 +272,7 @@ const appendTooltip = () => {
 
     const tooltipOffset = {
         x: 101,
-        y: 139 // 123 родной размер и 16 отступ для точки
+        y: tooltipHeight + 11 + 16 // родной размер, 11 высота ярлычка и 16 отступ для точки
     };
 
     const t1 = d3.transition().duration(250).ease(d3.easeLinear);
@@ -324,7 +335,52 @@ const appendTooltip = () => {
 };
 
 const appendLegend = () => {
-  const legendGroup = d3.select('#chart').append('div');
+  const createLegend = (dataLine) => {
+    const legend = d3.create('div');
+    legend.classed('c-legend', true);
+    legend.append('div').classed('c-legend__color', true).style('background-color', dataLine.color);
+    legend.append('p').classed('c-legend__name', true).text(dataLine.name);
+    
+    return legend.node();
+  };
+  const createTotal = (dataLine) => {
+    const total = d3.create('div');
+    total.classed('c-total', true);
+    total.append('p').classed('c-total__name', true).text(dataLine.name);
+    total.append('p').classed('c-total__value', true).text(1234); // todo Добавить количество
+
+    return total.node();
+  };
+  /*
+  <div class="c-chart-info">
+      <div class="c-chart-info__wrap c-chart-info__wrap--small-size">
+          <div class="c-legend">
+              <div class="c-legend__color"></div>
+              <div class="c-legend__name">Входящие обращения</div>
+          </div>
+          <div class="c-legend">
+              <div class="c-legend__color"></div>
+              <div class="c-legend__name">Исходящие обращения</div>
+          </div>
+      </div>
+      <div class="c-chart-info__wrap c-chart-info__wrap--end-pos">
+          <div class="c-total">
+              <div class="c-total__name">Входящие обращения:</div>
+              <div class="c-total__value">1234</div>
+          </div>
+          <div class="c-total">
+              <div class="c-total__name">Исходящие обращения:</div>
+              <div class="c-total__value">1234</div>
+          </div>
+      </div>
+  </div>
+  */
+  const ci = chart.insert('div', ':first-child').classed('c-chart-info', true);
+  const legendGroup = ci.append('div', true).classed('c-chart-info__wrap c-chart-info__wrap--small-size', true);
+  const totalGroup = ci.append('div', true).classed('c-chart-info__wrap c-chart-info__wrap--end-pos', true);
+
+  legendGroup.selectAll('div').data(dataLines).enter().insert(createLegend);
+  totalGroup.selectAll('div').data(dataLines).enter().insert(createTotal);
 };
 
 appendLeftAxis();

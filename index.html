@@ -22,16 +22,35 @@
             fill: #454142;
         }
 
-        .c-chart-info {
-            padding: 0 8px 0 50px;
+        .c-chart-info,
+        .c-chart-info__wrap {
             display: flex;
             align-items: flex-start;
+        }
+        .c-legend,
+        .c-total {
+            display: flex;
+            align-items: center;
+        }
+        .c-total__name,
+        .c-total__value,
+        .c-legend__name {
+            margin: 0;
+        }
+        .c-total,
+        .c-legend__name {
+            font-weight: 500;
+            line-height: 20px;
+            letter-spacing: 0.08px;
+            color: #92929D;
+        }
+
+        .c-chart-info {
+            padding: 32px 8px 0 50px;
             justify-content: space-between;
         }
         .c-chart-info__wrap {
             margin: -16px 0 0 -97px;
-            display: flex;
-            align-items: flex-start;
             flex-wrap: wrap;
         }
         .c-chart-info__wrap--small-size {
@@ -43,8 +62,6 @@
         }
         .c-legend {
             margin: 16px 0 0 36px;
-            display: flex;
-            align-items: center;
         }
         .c-legend__color {
             width: 18px;
@@ -53,53 +70,22 @@
             margin-right: 8px;
         }
         .c-legend__name {
-            color: #92929D;
             font-size: 14px;
-            font-weight: 500;
-            line-height: 20px;
-            letter-spacing: 0.5%;
         }
         .c-total {
             margin-left: 97px;
             margin-top: 16px;
-            display: flex;
-            align-items: center;
             font-size: 16px;
-            line-height: 20px;
-            font-weight: 500;
-            letter-spacing: 0.5%;
         }
         .c-total__value {
             margin-left: 12px;
             font-weight: 600;
+            color: #212121;
         }
     </style>
 </head>
 <body>
-    <div id="chart" style="width: 1592px">
-        <div class="c-chart-info">
-            <div class="c-chart-info__wrap c-chart-info__wrap--small-size">
-                <div class="c-legend">
-                    <div class="c-legend__color"></div>
-                    <div class="c-legend__name">Входящие обращения</div>
-                </div>
-                <div class="c-legend">
-                    <div class="c-legend__color"></div>
-                    <div class="c-legend__name">Исходящие обращения</div>
-                </div>
-            </div>
-            <div class="c-chart-info__wrap c-chart-info__wrap--end-pos">
-                <div class="c-total">
-                    <div class="c-total__name">Входящие обращения:</div>
-                    <div class="c-total__value">1234</div>
-                </div>
-                <div class="c-total">
-                    <div class="c-total__name">Исходящие обращения:</div>
-                    <div class="c-total__value">1234</div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="chart" style="width: 1592px"></div>
     <script src="./node_modules/d3/dist/d3.min.js"></script>
     <script src="./script.js"></script>
 </body>
