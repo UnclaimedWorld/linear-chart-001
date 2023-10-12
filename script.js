@@ -77,12 +77,12 @@ const data = [
   },
   {
       date: '2023-05-15T15:00:00+05:00',
-      accepted: 160,
+      accepted: 145,
       notaccepted: 12,
   },
   {
       date: '2023-05-15T16:00:00+05:00',
-      accepted: 156,
+      accepted: 150,
       notaccepted: 32,
   },
   {
@@ -122,18 +122,144 @@ const data = [
   },
     
 ];
+const data1 = [
+  {
+      date: '2023-05-15T00:00:00+05:00',
+      accepted: 0,
+      notaccepted: 0,
+  },
+  {
+      date: '2023-05-15T01:00:00+05:00',
+      accepted: 40,
+      notaccepted: 0,
+  },
+  {
+      date: '2023-05-15T02:00:00+05:00',
+      accepted: 20,
+      notaccepted: 0,
+  },
+  {
+      date: '2023-05-15T03:00:00+05:00',
+      accepted: 60,
+      notaccepted: 0,
+  },
+  {
+      date: '2023-05-15T04:00:00+05:00',
+      accepted: 90,
+      notaccepted: 0,
+  },
+  {
+      date: '2023-05-15T05:00:00+05:00',
+      accepted: 50,
+      notaccepted: 0,
+  },
+  {
+      date: '2023-05-15T06:00:00+05:00',
+      accepted: 160,
+      notaccepted: 0,
+  },
+  {
+      date: '2023-05-15T07:00:00+05:00',
+      accepted: 250,
+      notaccepted: 0,
+  },
+  {
+      date: '2023-05-15T08:00:00+05:00',
+      accepted: 360,
+      notaccepted: 40,
+  },
+  {
+      date: '2023-05-15T09:00:00+05:00',
+      accepted: 810,
+      notaccepted: 30,
+  },
+  {
+      date: '2023-05-15T10:00:00+05:00',
+      accepted: 1100,
+      notaccepted: 150,
+  },
+  {
+      date: '2023-05-15T11:00:00+05:00',
+      accepted: 1020,
+      notaccepted: 110,
+  },
+  {
+      date: '2023-05-15T12:00:00+05:00',
+      accepted: 980,
+      notaccepted: 80,
+  },
+  {
+      date: '2023-05-15T13:00:00+05:00',
+      accepted: 1160,
+      notaccepted: 30,
+  },
+  {
+      date: '2023-05-15T14:00:00+05:00',
+      accepted: 1450,
+      notaccepted: 210,
+  },
+  {
+      date: '2023-05-15T15:00:00+05:00',
+      accepted: 1450,
+      notaccepted: 120,
+  },
+  {
+      date: '2023-05-15T16:00:00+05:00',
+      accepted: 1500,
+      notaccepted: 320,
+  },
+  {
+      date: '2023-05-15T17:00:00+05:00',
+      accepted: 1430,
+      notaccepted: 150,
+  },
+  {
+      date: '2023-05-15T18:00:00+05:00',
+      accepted: 1340,
+      notaccepted: 140,
+  },
+  {
+      date: '2023-05-15T19:00:00+05:00',
+      accepted: 1110,
+      notaccepted: 90,
+  },
+  {
+      date: '2023-05-15T20:00:00+05:00',
+      accepted: 950,
+      notaccepted: 40,
+  },
+  {
+      date: '2023-05-15T21:00:00+05:00',
+      accepted: 550,
+      notaccepted: 0,
+  },
+  {
+      date: '2023-05-15T22:00:00+05:00',
+      accepted: 240,
+      notaccepted: 0,
+  },
+  {
+      date: '2023-05-15T23:00:00+05:00',
+      accepted: 90,
+      notaccepted: 0,
+  },
+    
+];
 
 class LeftAxis {
-  constructor(xScale, yScale, sizes) {
+  constructor(xScale, yScale, sizes, yMax, tickDividedBy) {
     this.root = d3.create('svg:g');
     this.sizes = sizes;
+    this.yMax = yMax;
+    this.tickDividedBy = tickDividedBy;
     this.setScale(xScale, yScale);
     this.setStyles();
   }
   setScale(xScale, yScale) {
+    const arr = new Array(this.yMax / this.tickDividedBy + 1).fill(0).map((m, i) => i * this.tickDividedBy);
     this.root
       .style('transform', `translate(${this.sizes.width + this.sizes.left}px, ${this.sizes.top}px)`)
-      .call(d3.axisLeft().scale(yScale).ticks(5).tickSize(this.sizes.width))
+      .call(d3.axisLeft().scale(yScale).tickValues(arr).tickSize(this.sizes.width))
   }
   setStyles() {
     this.root.attr('class', 'left-axis')
@@ -178,11 +304,12 @@ class BottomAxis {
   }
 }
 class DataPath {
-  constructor(xScale, yScale, sizes, data, dataLine) {
+  constructor(xScale, yScale, sizes, data, dataLine, defs) {
     this.root = d3.create('svg:g');
     this.data = data;
     this.dataLine = dataLine;
     this.sizes = sizes;
+    this.defs = defs;
     this.setScale(xScale, yScale);
     this.setStyles();
   }
@@ -194,7 +321,7 @@ class DataPath {
     this.root.append('path').datum(this.data).attr('stroke', this.dataLine.color).attr('stroke-width', '2px').attr('d', line).attr('fill', 'none');
   }
   setStyles() {
-    const gradient = defs.append('linearGradient').attr('id', 'g-' + this.dataLine.field).attr('gradientTransform', 'rotate(90)');
+    const gradient = this.defs.append('linearGradient').attr('id', 'g-' + this.dataLine.field).attr('gradientTransform', 'rotate(90)');
     gradient.append('stop').attr('offset', '0%').attr('stop-color', this.dataLine.color).attr('stop-opacity', '0.15');
     gradient.append('stop').attr('offset', '100%').attr('stop-color', 'white').attr('stop-opacity', '0.15');
   }
@@ -202,10 +329,6 @@ class DataPath {
     return this.root.node();
   }
 }
-
-const chart = d3.select('#chart');
-const svg = chart.append('svg');
-const defs = svg.append('defs')
 
 class DataLine {
     constructor(name, field, color) {
@@ -224,11 +347,12 @@ const [min,max] = d3.extent(data, d => new Date(d.date).getHours());
 const delta = max - min;
 
 class Tooltip {
-  constructor(xScale, yScale, sizes, dataLines, dataWrapper) {
+  constructor(xScale, yScale, sizes, dataLines, dataWrapper, svg) {
     this.root = d3.create('svg:g');
     this.tooltipHeight = 52 + dataLines.length * 20 + dataLines.length * (4 - 1) + 16;
     this.dataLines = dataLines;
     this.dataWrapper = dataWrapper;
+    this.svg = svg;
     this.sizes = sizes;
     this.xScale = xScale;
     this.yScale = yScale;
@@ -345,7 +469,7 @@ class Tooltip {
       }
       if(!lastSelectedData) {
           lastSelectedData = {
-              yTick: svg.select(`.bottom-axis .tick:nth-child(${i + 1})`),
+              yTick: this.svg.select(`.bottom-axis .tick:nth-child(${i + 1})`),
               i
           }
           lastSelectedData.yTick.classed('selected', true)
@@ -375,20 +499,41 @@ class Tooltip {
   }
 }
 class Legend {
-  constructor(dataLines) {
+  constructor(dataLines, data) {
     this.root = d3.create('div');
 
     this.root.classed('c-chart-info', true);
     const legendGroup = this.root.append('div').classed('c-chart-info__wrap c-chart-info__wrap--small-size', true);
     const totalGroup = this.root.append('div').classed('c-chart-info__wrap c-chart-info__wrap--end-pos', true);
 
-    legendGroup.selectAll('div').data(dataLines).enter().insert(Legend.createLegend);
-    totalGroup.selectAll('div').data(dataLines).enter().insert(Legend.createTotal);
+    this.totalElements = [];
+    this.data = data;
+
+    legendGroup.selectAll('div').data(dataLines).enter().insert((d) => this.createLegend(d));
+    totalGroup.selectAll('div').data(dataLines).enter().insert((d) => {
+      const { node, valueNode } = this.createTotal(d);
+      this.totalElements.push({
+        node: valueNode,
+        field: d.field
+      });
+      return node;
+    });
   }
   getNode() {
     return this.root.node();
   }
-  static createLegend(dataLine) {
+  redraw(data) {
+    this.data = data;
+    this.totalElements.forEach(({node, field}) => {
+      node.text(this.getMax(data, field));
+    });
+  }
+  getMax(data, field) {
+    return data.reduce((acc, curr) => {
+      return acc + curr[field];
+    }, 0);
+  }
+  createLegend(dataLine) {
     const legend = d3.create('div');
     legend.classed('c-legend', true);
     legend.append('div').classed('c-legend__color', true).style('background-color', dataLine.color);
@@ -396,18 +541,29 @@ class Legend {
     
     return legend.node();
   }
-  static createTotal(dataLine) {
+  createTotal(dataLine) {
+    const data = this.data;
+
     const total = d3.create('div');
     total.classed('c-total', true);
     total.append('p').classed('c-total__name', true).text(dataLine.name);
-    total.append('p').classed('c-total__value', true).text(1234); // todo Добавить количество
+    const max = this.getMax(data, dataLine.field);
+    const valueNode = total.append('p');
+    valueNode.classed('c-total__value', true).text(max);
 
-    return total.node();
+    return {
+      node: total.node(),
+      valueNode
+    }
   }
 }
 
 class Chart {
-  constructor(data) {
+  constructor(data, options = {}) {
+    const chart = d3.select('#chart');
+
+    const svg = chart.append('svg');
+
     const sizes = {
       top: 22,
       left: 51,
@@ -421,37 +577,59 @@ class Chart {
     sizes.width = sizes.totalWidth - sizes.left - sizes.right;
     sizes.totalHeight = sizes.height + sizes.top + sizes.bottom;
 
-    const dataWrapper = d3.create('svg:g').style('transform', `translate(${sizes.left}px,${sizes.top}px)`);
-    
     svg.attr('width', sizes.totalWidth + 'px');
     svg.attr('height', sizes.totalHeight + 'px');
-    
-    const yScale = d3.scaleLinear([0,250], [sizes.height,0]);
-    const xScale = d3.scaleTime([new Date('2023-05-15T00:00:00+05:00'), new Date('2023-05-15T23:00:00+05:00')], [0, sizes.width]);
+    this.calculateMax();
 
-    const legend = new Legend(dataLines);
-    this.appendSingle(chart, () => legend.getNode(), true);
-    
-    const leftAxis = new LeftAxis(xScale, yScale, sizes);
-    this.appendSingle(svg, () => leftAxis.getNode());
+    const { yMax } = this;
+
+    const dataWrapper = d3.create('svg:g').style('transform', `translate(${ sizes.left }px,${ sizes.top }px)`);
+
+    const yScale = d3.scaleLinear([0, yMax], [sizes.height,0]);
+    const xScale = d3.scaleTime([new Date('2023-05-15T00:00:00+05:00'), new Date('2023-05-15T23:00:00+05:00')], [0, sizes.width]);
     
     const bottomAxis = new BottomAxis(xScale, yScale, sizes);
-    this.appendSingle(svg, () => bottomAxis.getNode());
+    const tooltip = new Tooltip(xScale, yScale, sizes, dataLines, dataWrapper, svg);
+    const legend = new Legend(dataLines, data);
+    const leftAxis = new LeftAxis(xScale, yScale, sizes, yMax, this.tickDividedBy);
     
+    const defs = svg.append('defs');
     dataWrapper.append('rect').attr('width', sizes.width).attr('height',sizes.height).attr('fill','transparent');
     dataLines.forEach(d => {
-      const p = new DataPath(xScale, yScale, sizes, data, d);
+      const p = new DataPath(xScale, yScale, sizes, data, d, defs);
       this.appendSingle(dataWrapper, () => p.getNode());
     });
-
+    
+    this.appendSingle(chart, () => legend.getNode(), true);
+    this.appendSingle(svg, () => leftAxis.getNode());
+    this.appendSingle(svg, () => bottomAxis.getNode());
     this.appendSingle(svg, () => dataWrapper.node());
+    this.appendSingle(dataWrapper, () => tooltip.getNode());
 
-    const tooltip = new Tooltip(xScale, yScale, sizes, dataLines, dataWrapper);
-    this.appendSingle(dataWrapper, () => tooltip.getNode())
+    this.legend = legend;
   }
   appendSingle(where, whatFn, prepend) {
     where.node()[prepend ? 'prepend' : 'append'](whatFn());
   }
+  redraw(data) {
+    this.legend.redraw(data);
+  }
+  calculateMax() {
+    let yMax = 0;
+    data.forEach(d => {
+      yMax = Math.max(yMax, ...dataLines.map(s => d[s.field]));
+    });
+    this.tickDividedBy = Math.ceil(yMax / 500) * 50;
+    yMax = Math.ceil(Math.round(yMax + yMax * 0.1) / this.tickDividedBy) * this.tickDividedBy;
+
+    this.yMax = yMax;
+  }
 }
 
-new Chart(data);
+const chart = new Chart(data, {
+
+});
+
+setTimeout(() => {
+  chart.redraw(data1);
+}, 3000);
