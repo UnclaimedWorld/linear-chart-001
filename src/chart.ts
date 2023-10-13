@@ -1,497 +1,13 @@
-const data = [
-  {
-      date: '2023-05-15T00:00:00+05:00',
-      accepted: 0,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T01:00:00+05:00',
-      accepted: 4,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T02:00:00+05:00',
-      accepted: 2,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T03:00:00+05:00',
-      accepted: 6,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T04:00:00+05:00',
-      accepted: 9,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T05:00:00+05:00',
-      accepted: 5,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T06:00:00+05:00',
-      accepted: 16,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T07:00:00+05:00',
-      accepted: 25,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T08:00:00+05:00',
-      accepted: 36,
-      notaccepted: 4,
-  },
-  {
-      date: '2023-05-15T09:00:00+05:00',
-      accepted: 81,
-      notaccepted: 3,
-  },
-  {
-      date: '2023-05-15T10:00:00+05:00',
-      accepted: 110,
-      notaccepted: 15,
-  },
-  {
-      date: '2023-05-15T11:00:00+05:00',
-      accepted: 102,
-      notaccepted: 11,
-  },
-  {
-      date: '2023-05-15T12:00:00+05:00',
-      accepted: 98,
-      notaccepted: 8,
-  },
-  {
-      date: '2023-05-15T13:00:00+05:00',
-      accepted: 116,
-      notaccepted: 3,
-  },
-  {
-      date: '2023-05-15T14:00:00+05:00',
-      accepted: 145,
-      notaccepted: 21,
-  },
-  {
-      date: '2023-05-15T15:00:00+05:00',
-      accepted: 145,
-      notaccepted: 12,
-  },
-  {
-      date: '2023-05-15T16:00:00+05:00',
-      accepted: 150,
-      notaccepted: 32,
-  },
-  {
-      date: '2023-05-15T17:00:00+05:00',
-      accepted: 143,
-      notaccepted: 15,
-  },
-  {
-      date: '2023-05-15T18:00:00+05:00',
-      accepted: 134,
-      notaccepted: 14,
-  },
-  {
-      date: '2023-05-15T19:00:00+05:00',
-      accepted: 111,
-      notaccepted: 9,
-  },
-  {
-      date: '2023-05-15T20:00:00+05:00',
-      accepted: 95,
-      notaccepted: 4,
-  },
-  {
-      date: '2023-05-15T21:00:00+05:00',
-      accepted: 55,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T22:00:00+05:00',
-      accepted: 24,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T23:00:00+05:00',
-      accepted: 9,
-      notaccepted: 0,
-  },
-    
-];
-const data1 = [
-  {
-      date: '2023-05-15T00:00:00+05:00',
-      accepted: 0,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T01:00:00+05:00',
-      accepted: 40,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T02:00:00+05:00',
-      accepted: 20,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T03:00:00+05:00',
-      accepted: 60,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T04:00:00+05:00',
-      accepted: 950,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T05:00:00+05:00',
-      accepted: 50,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T06:00:00+05:00',
-      accepted: 160,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T07:00:00+05:00',
-      accepted: 250,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T08:00:00+05:00',
-      accepted: 360,
-      notaccepted: 40,
-  },
-  {
-      date: '2023-05-15T09:00:00+05:00',
-      accepted: 810,
-      notaccepted: 30,
-  },
-  {
-      date: '2023-05-15T10:00:00+05:00',
-      accepted: 1100,
-      notaccepted: 150,
-  },
-  {
-      date: '2023-05-15T11:00:00+05:00',
-      accepted: 1020,
-      notaccepted: 110,
-  },
-  {
-      date: '2023-05-15T12:00:00+05:00',
-      accepted: 980,
-      notaccepted: 80,
-  },
-  {
-      date: '2023-05-15T13:00:00+05:00',
-      accepted: 1160,
-      notaccepted: 30,
-  },
-  {
-      date: '2023-05-15T14:00:00+05:00',
-      accepted: 1450,
-      notaccepted: 210,
-  },
-  {
-      date: '2023-05-15T15:00:00+05:00',
-      accepted: 1450,
-      notaccepted: 120,
-  },
-  {
-      date: '2023-05-15T16:00:00+05:00',
-      accepted: 1500,
-      notaccepted: 320,
-  },
-  {
-      date: '2023-05-15T17:00:00+05:00',
-      accepted: 1430,
-      notaccepted: 150,
-  },
-  {
-      date: '2023-05-15T18:00:00+05:00',
-      accepted: 1340,
-      notaccepted: 140,
-  },
-  {
-      date: '2023-05-15T19:00:00+05:00',
-      accepted: 1110,
-      notaccepted: 90,
-  },
-  {
-      date: '2023-05-15T20:00:00+05:00',
-      accepted: 950,
-      notaccepted: 40,
-  },
-  {
-      date: '2023-05-15T21:00:00+05:00',
-      accepted: 550,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T22:00:00+05:00',
-      accepted: 240,
-      notaccepted: 0,
-  },
-  {
-      date: '2023-05-15T23:00:00+05:00',
-      accepted: 90,
-      notaccepted: 0,
-  },
-    
-];
-const data3 = [
-  {
-      date: 1,
-      accepted: 0,
-      notaccepted: 0,
-  },
-  {
-      date: 2,
-      accepted: 4,
-      notaccepted: 0,
-  },
-  {
-      date: 3,
-      accepted: 2,
-      notaccepted: 0,
-  },
-  {
-      date: 4,
-      accepted: 6,
-      notaccepted: 0,
-  },
-  {
-      date: 5,
-      accepted: 9,
-      notaccepted: 0,
-  },
-  {
-      date: 6,
-      accepted: 5,
-      notaccepted: 0,
-  },
-  {
-      date: 7,
-      accepted: 16,
-      notaccepted: 0,
-  },
-  {
-      date: 8,
-      accepted: 25,
-      notaccepted: 0,
-  },
-  {
-      date: 9,
-      accepted: 36,
-      notaccepted: 4,
-  },
-  {
-      date: 10,
-      accepted: 81,
-      notaccepted: 3,
-  },
-  {
-      date: 11,
-      accepted: 110,
-      notaccepted: 15,
-  },
-  {
-      date: 12,
-      accepted: 102,
-      notaccepted: 11,
-  },
-  {
-      date: 13,
-      accepted: 98,
-      notaccepted: 8,
-  },
-  {
-      date: 14,
-      accepted: 116,
-      notaccepted: 3,
-  },
-  {
-      date: 15,
-      accepted: 145,
-      notaccepted: 21,
-  },
-  {
-      date: 16,
-      accepted: 145,
-      notaccepted: 12,
-  },
-  {
-      date: 17,
-      accepted: 150,
-      notaccepted: 32,
-  },
-  {
-      date: 18,
-      accepted: 143,
-      notaccepted: 15,
-  },
-  {
-      date: 19,
-      accepted: 134,
-      notaccepted: 14,
-  },
-  {
-      date: 20,
-      accepted: 111,
-      notaccepted: 9,
-  },
-  {
-      date: 21,
-      accepted: 95,
-      notaccepted: 4,
-  },
-  {
-      date: 22,
-      accepted: 55,
-      notaccepted: 0,
-  },
-  {
-      date: 23,
-      accepted: 24,
-      notaccepted: 0,
-  },
-  {
-      date: 24,
-      accepted: 9,
-      notaccepted: 0,
-  },
-    
-];
-const data4 = [
-  {
-      date: 1,
-      accepted: 02,
-      notaccepted: 02,
-  },
-  {
-      date: 2,
-      accepted: 42,
-      notaccepted: 02,
-  },
-  {
-      date: 3,
-      accepted: 22,
-      notaccepted: 02,
-  },
-  {
-      date: 4,
-      accepted: 62,
-      notaccepted: 02,
-  },
-  {
-      date: 5,
-      accepted: 92,
-      notaccepted: 02,
-  },
-  {
-      date: 6,
-      accepted: 52,
-      notaccepted: 02,
-  },
-  {
-      date: 7,
-      accepted: 162,
-      notaccepted: 02,
-  },
-  {
-      date: 8,
-      accepted: 252,
-      notaccepted: 02,
-  },
-  {
-      date: 9,
-      accepted: 362,
-      notaccepted: 42,
-  },
-  {
-      date: 10,
-      accepted: 812,
-      notaccepted: 32,
-  },
-  {
-      date: 11,
-      accepted: 1102,
-      notaccepted: 152,
-  },
-  {
-      date: 12,
-      accepted: 1022,
-      notaccepted: 112,
-  },
-  {
-      date: 13,
-      accepted: 982,
-      notaccepted: 82,
-  },
-  {
-      date: 14,
-      accepted: 1162,
-      notaccepted: 32,
-  },
-  {
-      date: 15,
-      accepted: 1452,
-      notaccepted: 212,
-  },
-  {
-      date: 16,
-      accepted: 1452,
-      notaccepted: 122,
-  },
-  {
-      date: 17,
-      accepted: 1502,
-      notaccepted: 322,
-  },
-  {
-      date: 18,
-      accepted: 1432,
-      notaccepted: 152,
-  },
-  {
-      date: 19,
-      accepted: 1342,
-      notaccepted: 142,
-  },
-  {
-      date: 20,
-      accepted: 1112,
-      notaccepted: 92,
-  },
-  {
-      date: 21,
-      accepted: 952,
-      notaccepted: 42,
-  },
-  {
-      date: 22,
-      accepted: 552,
-      notaccepted: 02,
-  },
-  {
-      date: 23,
-      accepted: 242,
-      notaccepted: 02,
-  },
-  {
-      date: 24,
-      accepted: 92,
-      notaccepted: 02,
-  },
-    
-];
+import * as d3 from "d3";
+
+type ChartDataElement = Record<string, number>;
+type ChartData = ChartDataElement[];
+
 class BaseChartElement {
-  constructor(data, chartState) {
+  root;
+  chartState;
+  data;
+  constructor(data: ChartData, chartState: ChartState) {
     this.root = d3.create('svg:g');
     this.chartState = chartState;
     this.data = data;
@@ -500,20 +16,26 @@ class BaseChartElement {
     return this.root.node();
   }
   destroy() {}
+  // @ts-ignore
+  redraw(data: ChartData) {}
 }
+
 class LeftAxis extends BaseChartElement {
-  constructor(data, chartState) {
+  constructor(data: ChartData, chartState: ChartState) {
     super(data, chartState);
     this.setScale();
     this.setStyles();
   }
   setScale() {
     const {yMax, tickDividedBy, sizes, yScale} = this.chartState;
+    
+    console.log(yMax / tickDividedBy + 1)
 
-    const arr = new Array(yMax / tickDividedBy + 1).fill(0).map((m, i) => i * tickDividedBy);
+    const arr = new Array(yMax / tickDividedBy + 1).fill(0).map((_, i) => i * tickDividedBy);
     this.root
       .style('transform', `translate(${sizes.width + sizes.left}px, ${sizes.top}px)`)
-      .call(d3.axisLeft().scale(yScale).tickValues(arr).tickSize(sizes.width))
+      // @ts-ignore
+      .call(d3.axisLeft(yScale).tickValues(arr).tickSize(sizes.width))
   }
   setStyles() {
     this.root.attr('class', 'left-axis');
@@ -523,7 +45,7 @@ class LeftAxis extends BaseChartElement {
   }
 }
 class BottomAxis extends BaseChartElement {
-  constructor(data, chartState) {
+  constructor(data: ChartData, chartState: ChartState) {
     super(data, chartState);
     this.setScale();
     this.setStyles();
@@ -533,7 +55,8 @@ class BottomAxis extends BaseChartElement {
     const {sizes, xScale, yScale} = this.chartState;
     g
       .style('transform', `translate(${sizes.left}px,${yScale(0) + sizes.top}px)`)
-      .call(d3.axisBottom().scale(xScale).ticks(this.data.length).tickValues(this.chartState.parseXField(this.data)).tickFormat((d, i) => {
+      // @ts-ignore
+      .call(d3.axisBottom(xScale).ticks(this.data.length).tickValues(this.chartState.parseXField(this.data)).tickFormat((d, i) => {
         return this.chartState.parseXVisible(this.data[i])
       }))
     g.selectAll('.tick line')
@@ -556,7 +79,12 @@ class BottomAxis extends BaseChartElement {
   }
 }
 class DataPath extends BaseChartElement {
-  constructor(data, chartState, dataLineField) {
+  dataLineField;
+  lineNode;
+  areaNode;
+  line: d3.Line<[number, number]> = d3.line();
+  area: d3.Area<[number, number]> = d3.area();
+  constructor(data: ChartData, chartState: ChartState, dataLineField: string) {
     super(data, chartState);
 
     this.dataLineField = dataLineField;
@@ -570,15 +98,21 @@ class DataPath extends BaseChartElement {
   setScale() {
     const {sizes, xScale, yScale} = this.chartState;
 
+    //@ts-ignore
     this.line = d3.line().curve(d3.curveBumpX).x((d) => xScale(this.chartState.parseXField(d))).y(d => yScale(d[this.dataLineField]));
+    //@ts-ignore
     this.area = d3.area().curve(d3.curveBumpX).x((d) => xScale(this.chartState.parseXField(d))).y1(d => yScale(d[this.dataLineField]));
     this.area.y0(sizes.height);
-
-    this.areaNode.attr('d', this.area(this.data));
+    //@ts-ignore
+    this.areaNode.attr('d', this.area(this.data));    
+    //@ts-ignore
     this.lineNode.datum(this.data).attr('d', this.line);
   }
   setStyles() {
     const dataLine = this.chartState.dataLines.find(d => d.field === this.dataLineField);
+
+    if(!dataLine) return;
+
     const { defsNode } = this.chartState;
     const gradient = defsNode.append('linearGradient').attr('id', 'g-' + dataLine.field).attr('gradientTransform', 'rotate(90)');
     gradient.append('stop').attr('offset', '0%').attr('stop-color', dataLine.color).attr('stop-opacity', '0.15');
@@ -587,18 +121,22 @@ class DataPath extends BaseChartElement {
     this.areaNode.attr('fill', `url(#g-${dataLine.field})`);
     this.lineNode.attr('stroke', dataLine.color).attr('stroke-width', '2px').attr('fill', 'none');
   }
-  redraw(data) {
+  redraw(data: ChartData) {
     this.data = data;
     this.setScale();
   }
 }
 class DataLine {
-    constructor(name, field, color) {
-        this.name = name;
-        this.field = field;
-        this.color = color;
-        this.textVar = null; // В этой переменной будет храниться ссылка на заголовок в тултипе
-    }
+  name;
+  field;
+  color;
+  textVar: any;
+  constructor(name: string, field: string, color: string) {
+    this.name = name;
+    this.field = field;
+    this.color = color;
+    this.textVar = null; // В этой переменной будет храниться ссылка на заголовок в тултипе
+  }
 }
 const dataLines = [
     new DataLine('Входящие', 'accepted', '#397AF5'),
@@ -606,14 +144,15 @@ const dataLines = [
 ]
 
 class Tooltip extends BaseChartElement {
-  constructor(data, chartState) {
+  tooltipHeight;
+  tooltip;
+  tooltipTitle;
+  circles;
+  constructor(data: ChartData, chartState: ChartState) {
     super(data, chartState);
 
     this.tooltipHeight = 52 + chartState.dataLines.length * 20 + chartState.dataLines.length * (4 - 1) + 16;
-    this.createTooltip();
-    this.initEvent();
-  }
-  createTooltip() {
+    
     const yOffset = 14;
     const tooltipHeight = this.tooltipHeight;
     const tooltip = this.root.append('svg:g');
@@ -680,6 +219,8 @@ class Tooltip extends BaseChartElement {
     this.tooltip = tooltip;
     this.tooltipTitle = tooltipTitle;
     this.circles = circles;
+
+    this.initEvent();
   }
   initEvent() {
     const tooltipOffset = {
@@ -688,10 +229,10 @@ class Tooltip extends BaseChartElement {
     };
     const {yScale, xScale, sizes, dataWrapperNode, svgNode} = this.chartState;
 
-    const [min, max] = d3.extent(this.data, this.chartState.parseXField);
-    const delta = max - min;
+    const [min = 0, max = 0] = d3.extent<ChartDataElement, number>(this.data, this.chartState.parseXField);
+    let delta = max - min;
 
-    dataWrapperNode.on('mouseenter', m => {
+    dataWrapperNode.on('mouseenter', () => {
       this.tooltip
         .transition()
         .duration(250)
@@ -701,9 +242,13 @@ class Tooltip extends BaseChartElement {
       });
     });
 
-    let lastSelectedData = null;
+    let lastSelectedData: {
+      yTick: any,
+      i: number
+    } | null = null;
+
     dataWrapperNode.on('mousemove', m => {
-      const [x, y] = d3.pointer(m);
+      const [x] = d3.pointer(m);
       const i = Math.round(x / sizes.width * delta);
       const hoveredData = this.data[i];
 
@@ -713,7 +258,7 @@ class Tooltip extends BaseChartElement {
         return yScale(hoveredData[d.field]);
       });
 
-      dataLines.forEach((d, idx) => {
+      dataLines.forEach((_, idx) => {
         this.circles[idx]
           .attr('cx', xPos)
           .attr('cy', yPosList[idx])
@@ -752,14 +297,17 @@ class Tooltip extends BaseChartElement {
       }
     });
   }
-  redraw(data) {
+  redraw(data: ChartData) {
     this.data = data;
   }
 }
 class Legend extends BaseChartElement {
-  constructor(data, chartState) {
+  totalElements: { node: any, field: string }[]
+
+  constructor(data: ChartData, chartState: ChartState) {
     super(data, chartState);
-    this.root = d3.create('div'); // Legend является html элементом, а BaseChartElement создает svg элементы
+    // ts хак
+    this.root = d3.create('div') as unknown as d3.Selection<Element, undefined, null, undefined>; // Legend является html элементом, а BaseChartElement создает svg элементы
 
     this.root.classed('c-chart-info', true);
     const legendGroup = this.root.append('div').classed('c-chart-info__wrap c-chart-info__wrap--small-size', true);
@@ -780,21 +328,21 @@ class Legend extends BaseChartElement {
     
     this.root.style('padding-left', chartState.sizes.left + 'px').style('padding-right', chartState.sizes.right + 'px');
   }
-  redraw(data) {
+  redraw(data: ChartData) {
     this.data = data;
     this.totalElements.forEach(({node, field}) => {
       node.text(this.getMax(data, field));
     });
   }
   destroy() {
-    this.getNode().remove();
+    this.getNode()?.remove();
   }
-  getMax(data, field) {
+  getMax(data: ChartData, field: string) {
     return data.reduce((acc, curr) => {
       return acc + curr[field];
     }, 0);
   }
-  createLegend(dataLine) {
+  createLegend(dataLine: DataLine) {
     const legend = d3.create('div');
     legend.classed('c-legend', true);
     legend.append('div').classed('c-legend__color', true).style('background-color', dataLine.color);
@@ -802,7 +350,7 @@ class Legend extends BaseChartElement {
     
     return legend.node();
   }
-  createTotal(dataLine) {
+  createTotal(dataLine: DataLine) {
     const data = this.data;
 
     const total = d3.create('div');
@@ -819,68 +367,97 @@ class Legend extends BaseChartElement {
   }
 }
 
-class ChartState {
-  sizes;
-  yMax;
-  tickDividedBy;
-  dataLines;
-  dataWrapperNode;
-  svgNode;
-  xScale;
-  yScale;
+interface ChartSizes {
+  top: number;
+  left: number;
+  right: number;
+  bottom: number;
+  width: number;
+  height: number;
+  totalWidth: number;
+  totalHeight: number;
 }
 
+type VisibleParser = (d: ChartDataElement) => string|number;
+type FieldParser = (d: ChartDataElement) => number;
+interface ChartState {
+  sizes: ChartSizes;
+  yMax: number;
+  tickDividedBy: number;
+  dataLines: DataLine[];
+  dataWrapperNode: d3.Selection<Element, undefined, null, undefined>;
+  svgNode: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
+  defsNode: d3.Selection<SVGDefsElement, unknown, HTMLElement, any>;
+  xScale: d3.ScaleLinear<number, number, never>;
+  yScale: d3.ScaleLinear<number, number, never>;
+  parseXVisible: VisibleParser;
+  parseXField: FieldParser;
+}
+
+interface ChartOptions {
+  dataLines: DataLine[],
+  xAxis: {
+    getVisible: VisibleParser,
+    getData: FieldParser
+  }
+}
 class Chart {
-  constructor(data, options = {}) {
+  chartState: ChartState;
+  data: ChartData;
+  dataPaths: DataPath[];
+  elements: BaseChartElement[];
+
+  constructor(data: ChartData, options: ChartOptions) {
     const chart = d3.select('#chart');
     const svg = chart.append('svg');
 
     // ChartState просто группирует необходимые для чартов данные, чтобы не раздувать интерфейсы функций и конструкторов
-    const chartState = new ChartState();
-    this.chartState = chartState;
-
-    chartState.parseXVisible = options.xAxis.getVisible;
-    chartState.parseXField = options.xAxis.getData;
-
-    const sizes = {
+    const sizes: ChartSizes = {
       top: 22,
       left: 86,
       right: 34,
       bottom: 94,
       width: 0,
       height: 389,
-      totalWidth: chart.node().clientWidth,
+      totalWidth: (chart.node() as Element).clientWidth,
       totalHeight: 0
     };
     sizes.width = sizes.totalWidth - sizes.left - sizes.right;
     sizes.totalHeight = sizes.height + sizes.top + sizes.bottom;
-    chartState.sizes = sizes;
-
+    
     svg.attr('width', sizes.totalWidth + 'px');
     svg.attr('height', sizes.totalHeight + 'px');
 
     this.data = data;
-    this.calculateMax();
+    const { yMax, tickDividedBy } = this.calculateMax(options.dataLines);
 
     const dataWrapper = d3.create('svg:g').style('transform', `translate(${ sizes.left }px,${ sizes.top }px)`);
-    chartState.dataWrapperNode = dataWrapper;
 
-    const yScale = d3.scaleLinear([0, chartState.yMax], [sizes.height,0]);
-    const [min, max] = d3.extent(data, chartState.parseXField);
+    const yScale = d3.scaleLinear([0, yMax], [sizes.height,0]);
+    const [min = 0, max = 0] = d3.extent<ChartDataElement, number>(data, options.xAxis.getData);
     const xScale = d3.scaleLinear([min, max], [0, sizes.width]);
 
-    chartState.dataLines = options.dataLines;
-    chartState.xScale = xScale;
-    chartState.yScale = yScale;
-    chartState.svgNode = svg;
-    
+    const defs = svg.append('defs');
+
+    const chartState: ChartState = {
+      sizes,
+      yMax,
+      tickDividedBy,
+      dataLines: [],
+      dataWrapperNode: dataWrapper,
+      svgNode: svg,
+      defsNode: defs,
+      yScale,
+      xScale,
+      parseXVisible: options.xAxis.getVisible,
+      parseXField: options.xAxis.getData,
+    };
+    this.chartState = chartState;
+
     const bottomAxis = new BottomAxis(data, chartState);
     const tooltip = new Tooltip(data, chartState);
     const legend = new Legend(data, chartState);
     const leftAxis = new LeftAxis(data, chartState);
-    
-    const defs = svg.append('defs');
-    chartState.defsNode = defs;
     
     dataWrapper.append('rect').attr('width', sizes.width).attr('height', sizes.height).attr('fill','transparent');
 
@@ -897,28 +474,25 @@ class Chart {
     this.appendSingle(svg, () => dataWrapper.node());
     this.appendSingle(dataWrapper, () => tooltip.getNode());
 
-    this.legend = legend;
-    this.leftAxis = leftAxis;
-    this.bottomAxis = bottomAxis;
-    this.tooltip = tooltip;
+    this.elements = [
+      legend,
+      leftAxis,
+      bottomAxis,
+      tooltip
+    ]
   }
-  appendSingle(where, whatFn, prepend) {
+  appendSingle(where: any, whatFn: any, prepend?: any) {
     where.node()[prepend ? 'prepend' : 'append'](whatFn());
   }
-  redraw(data) {
+  redraw(data: ChartData) {
     this.data = data;
-    this.calculateMax();
+    this.calculateMax(this.chartState.dataLines);
+    this.chartState.yScale.domain([0, this.chartState.yMax])
 
-    this.chartState.yScale
-      .domain([0, this.chartState.yMax])
-
-    this.leftAxis.redraw(data);
-    this.bottomAxis.redraw(data);
-    this.legend.redraw(data);
+    this.elements.forEach(e => e.redraw(data));
     this.dataPaths.forEach(d => d.redraw(data));
-    this.tooltip.redraw(data);
   }
-  calculateMax() {
+  calculateMax(dataLines: DataLine[]) {
     let yMax = 0;
     let tickDividedBy = 0;
     
@@ -932,42 +506,21 @@ class Chart {
     tickDividedBy = Math.ceil(yMax / 500) * multiplyBy;
     yMax = Math.ceil(Math.round(yMax + yMax * 0.1) / tickDividedBy) * tickDividedBy;
 
-    this.chartState.tickDividedBy = tickDividedBy;
-    this.chartState.yMax = yMax;
+    return {
+      yMax,
+      tickDividedBy
+    }
   }
   destroy() {
     this.chartState.svgNode.remove();
-
-    this.leftAxis.destroy();
-    this.bottomAxis.destroy();
-    this.legend.destroy();
+    this.elements.forEach(e => e.destroy());
     this.dataPaths.forEach(d => d.destroy());
-    this.tooltip.destroy();
 
-    this.chartState = null;
-    this.leftAxis = null;
-    this.bottomAxis = null;
-    this.legend = null;
-    this.tooltip = null;
-    this.dataPaths = null
-    this.data = null;
+    // this.chartState = null;
+    // this.elements = null;
+    // this.dataPaths = null
+    // this.data = null;
   }
 }
 
-const chart = new Chart(data3, {
-  dataLines,
-  xAxis: {
-    getVisible(d) {
-      let dateOld = d.date < 11 ? '0' + (d.date - 1) : d.date - 1;
-      let date = d.date < 10 ? '0' + d.date : d.date;
-      return `${dateOld}:00-${date}:00`;
-    },
-    getData(d) {
-      return d.date;
-    }
-  }
-});
-
-setTimeout(() => {
-  chart.destroy();
-}, 1000);
+export default Chart;
