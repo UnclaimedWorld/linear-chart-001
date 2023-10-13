@@ -244,7 +244,252 @@ const data1 = [
   },
     
 ];
-
+const data3 = [
+  {
+      date: 1,
+      accepted: 0,
+      notaccepted: 0,
+  },
+  {
+      date: 2,
+      accepted: 4,
+      notaccepted: 0,
+  },
+  {
+      date: 3,
+      accepted: 2,
+      notaccepted: 0,
+  },
+  {
+      date: 4,
+      accepted: 6,
+      notaccepted: 0,
+  },
+  {
+      date: 5,
+      accepted: 9,
+      notaccepted: 0,
+  },
+  {
+      date: 6,
+      accepted: 5,
+      notaccepted: 0,
+  },
+  {
+      date: 7,
+      accepted: 16,
+      notaccepted: 0,
+  },
+  {
+      date: 8,
+      accepted: 25,
+      notaccepted: 0,
+  },
+  {
+      date: 9,
+      accepted: 36,
+      notaccepted: 4,
+  },
+  {
+      date: 10,
+      accepted: 81,
+      notaccepted: 3,
+  },
+  {
+      date: 11,
+      accepted: 110,
+      notaccepted: 15,
+  },
+  {
+      date: 12,
+      accepted: 102,
+      notaccepted: 11,
+  },
+  {
+      date: 13,
+      accepted: 98,
+      notaccepted: 8,
+  },
+  {
+      date: 14,
+      accepted: 116,
+      notaccepted: 3,
+  },
+  {
+      date: 15,
+      accepted: 145,
+      notaccepted: 21,
+  },
+  {
+      date: 16,
+      accepted: 145,
+      notaccepted: 12,
+  },
+  {
+      date: 17,
+      accepted: 150,
+      notaccepted: 32,
+  },
+  {
+      date: 18,
+      accepted: 143,
+      notaccepted: 15,
+  },
+  {
+      date: 19,
+      accepted: 134,
+      notaccepted: 14,
+  },
+  {
+      date: 20,
+      accepted: 111,
+      notaccepted: 9,
+  },
+  {
+      date: 21,
+      accepted: 95,
+      notaccepted: 4,
+  },
+  {
+      date: 22,
+      accepted: 55,
+      notaccepted: 0,
+  },
+  {
+      date: 23,
+      accepted: 24,
+      notaccepted: 0,
+  },
+  {
+      date: 24,
+      accepted: 9,
+      notaccepted: 0,
+  },
+    
+];
+const data4 = [
+  {
+      date: 1,
+      accepted: 02,
+      notaccepted: 02,
+  },
+  {
+      date: 2,
+      accepted: 42,
+      notaccepted: 02,
+  },
+  {
+      date: 3,
+      accepted: 22,
+      notaccepted: 02,
+  },
+  {
+      date: 4,
+      accepted: 62,
+      notaccepted: 02,
+  },
+  {
+      date: 5,
+      accepted: 92,
+      notaccepted: 02,
+  },
+  {
+      date: 6,
+      accepted: 52,
+      notaccepted: 02,
+  },
+  {
+      date: 7,
+      accepted: 162,
+      notaccepted: 02,
+  },
+  {
+      date: 8,
+      accepted: 252,
+      notaccepted: 02,
+  },
+  {
+      date: 9,
+      accepted: 362,
+      notaccepted: 42,
+  },
+  {
+      date: 10,
+      accepted: 812,
+      notaccepted: 32,
+  },
+  {
+      date: 11,
+      accepted: 1102,
+      notaccepted: 152,
+  },
+  {
+      date: 12,
+      accepted: 1022,
+      notaccepted: 112,
+  },
+  {
+      date: 13,
+      accepted: 982,
+      notaccepted: 82,
+  },
+  {
+      date: 14,
+      accepted: 1162,
+      notaccepted: 32,
+  },
+  {
+      date: 15,
+      accepted: 1452,
+      notaccepted: 212,
+  },
+  {
+      date: 16,
+      accepted: 1452,
+      notaccepted: 122,
+  },
+  {
+      date: 17,
+      accepted: 1502,
+      notaccepted: 322,
+  },
+  {
+      date: 18,
+      accepted: 1432,
+      notaccepted: 152,
+  },
+  {
+      date: 19,
+      accepted: 1342,
+      notaccepted: 142,
+  },
+  {
+      date: 20,
+      accepted: 1112,
+      notaccepted: 92,
+  },
+  {
+      date: 21,
+      accepted: 952,
+      notaccepted: 42,
+  },
+  {
+      date: 22,
+      accepted: 552,
+      notaccepted: 02,
+  },
+  {
+      date: 23,
+      accepted: 242,
+      notaccepted: 02,
+  },
+  {
+      date: 24,
+      accepted: 92,
+      notaccepted: 02,
+  },
+    
+];
 class BaseChartElement {
   constructor(data, chartState) {
     this.root = d3.create('svg:g');
@@ -254,6 +499,7 @@ class BaseChartElement {
   getNode() {
     return this.root.node();
   }
+  destroy() {}
 }
 class LeftAxis extends BaseChartElement {
   constructor(data, chartState) {
@@ -287,7 +533,9 @@ class BottomAxis extends BaseChartElement {
     const {sizes, xScale, yScale} = this.chartState;
     g
       .style('transform', `translate(${sizes.left}px,${yScale(0) + sizes.top}px)`)
-      .call(d3.axisBottom().scale(xScale).ticks(d3.utcHour.every(1), d3.utcFormat('%H:%M')))
+      .call(d3.axisBottom().scale(xScale).ticks(this.data.length).tickValues(this.chartState.parseXField(this.data)).tickFormat((d, i) => {
+        return this.chartState.parseXVisible(this.data[i])
+      }))
     g.selectAll('.tick line')
       .attr('style', `transform: translateY(${-yScale(0)}px)`)
       .attr('stroke', '#E1E1E1')
@@ -322,8 +570,8 @@ class DataPath extends BaseChartElement {
   setScale() {
     const {sizes, xScale, yScale} = this.chartState;
 
-    this.line = d3.line().curve(d3.curveBumpX).x((d) => xScale(new Date(d.date))).y(d => yScale(d[this.dataLineField]));
-    this.area = d3.area().curve(d3.curveBumpX).x((d) => xScale(new Date(d.date))).y1(d => yScale(d[this.dataLineField]));
+    this.line = d3.line().curve(d3.curveBumpX).x((d) => xScale(this.chartState.parseXField(d))).y(d => yScale(d[this.dataLineField]));
+    this.area = d3.area().curve(d3.curveBumpX).x((d) => xScale(this.chartState.parseXField(d))).y1(d => yScale(d[this.dataLineField]));
     this.area.y0(sizes.height);
 
     this.areaNode.attr('d', this.area(this.data));
@@ -356,9 +604,6 @@ const dataLines = [
     new DataLine('Входящие', 'accepted', '#397AF5'),
     new DataLine('Обработанные', 'notaccepted', '#00CC56'),
 ]
-
-const [min,max] = d3.extent(data, d => new Date(d.date).getHours());
-const delta = max - min;
 
 class Tooltip extends BaseChartElement {
   constructor(data, chartState) {
@@ -443,6 +688,9 @@ class Tooltip extends BaseChartElement {
     };
     const {yScale, xScale, sizes, dataWrapperNode, svgNode} = this.chartState;
 
+    const [min, max] = d3.extent(this.data, this.chartState.parseXField);
+    const delta = max - min;
+
     dataWrapperNode.on('mouseenter', m => {
       this.tooltip
         .transition()
@@ -459,7 +707,7 @@ class Tooltip extends BaseChartElement {
       const i = Math.round(x / sizes.width * delta);
       const hoveredData = this.data[i];
 
-      const xPos = xScale(new Date(hoveredData.date));
+      const xPos = xScale(this.chartState.parseXField(hoveredData));
 
       const yPosList = dataLines.map(d => {
         return yScale(hoveredData[d.field]);
@@ -484,7 +732,7 @@ class Tooltip extends BaseChartElement {
           }
           lastSelectedData.yTick.classed('selected', true)
       }
-      this.tooltipTitle.text(hoveredData.date.slice(11,16))
+      this.tooltipTitle.text(this.chartState.parseXVisible(hoveredData));
       dataLines.forEach(r => {
           r.textVar.selection().text(hoveredData[r.field])
       });
@@ -538,6 +786,9 @@ class Legend extends BaseChartElement {
       node.text(this.getMax(data, field));
     });
   }
+  destroy() {
+    this.getNode().remove();
+  }
   getMax(data, field) {
     return data.reduce((acc, curr) => {
       return acc + curr[field];
@@ -568,7 +819,7 @@ class Legend extends BaseChartElement {
   }
 }
 
-class ChartParamsGroup {
+class ChartState {
   sizes;
   yMax;
   tickDividedBy;
@@ -585,8 +836,11 @@ class Chart {
     const svg = chart.append('svg');
 
     // ChartState просто группирует необходимые для чартов данные, чтобы не раздувать интерфейсы функций и конструкторов
-    const chartState = new ChartParamsGroup();
+    const chartState = new ChartState();
     this.chartState = chartState;
+
+    chartState.parseXVisible = options.xAxis.getVisible;
+    chartState.parseXField = options.xAxis.getData;
 
     const sizes = {
       top: 22,
@@ -612,7 +866,8 @@ class Chart {
     chartState.dataWrapperNode = dataWrapper;
 
     const yScale = d3.scaleLinear([0, chartState.yMax], [sizes.height,0]);
-    const xScale = d3.scaleTime([new Date('2023-05-15T00:00:00+05:00'), new Date('2023-05-15T23:00:00+05:00')], [0, sizes.width]);
+    const [min, max] = d3.extent(data, chartState.parseXField);
+    const xScale = d3.scaleLinear([min, max], [0, sizes.width]);
 
     chartState.dataLines = options.dataLines;
     chartState.xScale = xScale;
@@ -627,7 +882,7 @@ class Chart {
     const defs = svg.append('defs');
     chartState.defsNode = defs;
     
-    dataWrapper.append('rect').attr('width', sizes.width).attr('height',sizes.height).attr('fill','transparent');
+    dataWrapper.append('rect').attr('width', sizes.width).attr('height', sizes.height).attr('fill','transparent');
 
     this.dataPaths = [];
     options.dataLines.forEach(d => {
@@ -680,12 +935,39 @@ class Chart {
     this.chartState.tickDividedBy = tickDividedBy;
     this.chartState.yMax = yMax;
   }
+  destroy() {
+    this.chartState.svgNode.remove();
+
+    this.leftAxis.destroy();
+    this.bottomAxis.destroy();
+    this.legend.destroy();
+    this.dataPaths.forEach(d => d.destroy());
+    this.tooltip.destroy();
+
+    this.chartState = null;
+    this.leftAxis = null;
+    this.bottomAxis = null;
+    this.legend = null;
+    this.tooltip = null;
+    this.dataPaths = null
+    this.data = null;
+  }
 }
 
-const chart = new Chart(data1, {
-  dataLines
+const chart = new Chart(data3, {
+  dataLines,
+  xAxis: {
+    getVisible(d) {
+      let dateOld = d.date < 11 ? '0' + (d.date - 1) : d.date - 1;
+      let date = d.date < 10 ? '0' + d.date : d.date;
+      return `${dateOld}:00-${date}:00`;
+    },
+    getData(d) {
+      return d.date;
+    }
+  }
 });
 
 setTimeout(() => {
-  chart.redraw(data);
+  chart.destroy();
 }, 1000);
