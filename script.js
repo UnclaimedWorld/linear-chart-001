@@ -1,4 +1,3 @@
-
 const data = [
   {
       date: '2023-05-15T00:00:00+05:00',
@@ -145,7 +144,7 @@ const data1 = [
   },
   {
       date: '2023-05-15T04:00:00+05:00',
-      accepted: 90,
+      accepted: 950,
       notaccepted: 0,
   },
   {
@@ -246,49 +245,55 @@ const data1 = [
     
 ];
 
-class LeftAxis {
-  constructor(xScale, yScale, sizes, yMax, tickDividedBy) {
+class BaseChartElement {
+  constructor(data, chartState) {
     this.root = d3.create('svg:g');
-    this.sizes = sizes;
-    this.yMax = yMax;
-    this.tickDividedBy = tickDividedBy;
-    this.setScale(xScale, yScale);
-    this.setStyles();
-  }
-  setScale(xScale, yScale) {
-    const arr = new Array(this.yMax / this.tickDividedBy + 1).fill(0).map((m, i) => i * this.tickDividedBy);
-    this.root
-      .style('transform', `translate(${this.sizes.width + this.sizes.left}px, ${this.sizes.top}px)`)
-      .call(d3.axisLeft().scale(yScale).tickValues(arr).tickSize(this.sizes.width))
-  }
-  setStyles() {
-    this.root.attr('class', 'left-axis')
-      .selectAll('line').attr('stroke', '#E1E1E1')
-      .select('.domain').remove()
-    this.root.selectAll('text')
-      .style('transform', 'translateX(-15px)')
+    this.chartState = chartState;
+    this.data = data;
   }
   getNode() {
     return this.root.node();
   }
 }
-class BottomAxis {
-  constructor(xScale, yScale, sizes) {
-    this.root = d3.create('svg:g');
-    this.sizes = sizes;
-    this.setScale(xScale, yScale);
+class LeftAxis extends BaseChartElement {
+  constructor(data, chartState) {
+    super(data, chartState);
+    this.setScale();
     this.setStyles();
   }
-  setScale(xScale, yScale) {
+  setScale() {
+    const {yMax, tickDividedBy, sizes, yScale} = this.chartState;
+
+    const arr = new Array(yMax / tickDividedBy + 1).fill(0).map((m, i) => i * tickDividedBy);
+    this.root
+      .style('transform', `translate(${sizes.width + sizes.left}px, ${sizes.top}px)`)
+      .call(d3.axisLeft().scale(yScale).tickValues(arr).tickSize(sizes.width))
+  }
+  setStyles() {
+    this.root.attr('class', 'left-axis');
+  }
+  redraw() {
+    this.setScale();
+  }
+}
+class BottomAxis extends BaseChartElement {
+  constructor(data, chartState) {
+    super(data, chartState);
+    this.setScale();
+    this.setStyles();
+  }
+  setScale() {
     const g = this.root;
+    const {sizes, xScale, yScale} = this.chartState;
     g
-      .style('transform', `translate(${this.sizes.left}px,${yScale(0) + this.sizes.top}px)`)
+      .style('transform', `translate(${sizes.left}px,${yScale(0) + sizes.top}px)`)
       .call(d3.axisBottom().scale(xScale).ticks(d3.utcHour.every(1), d3.utcFormat('%H:%M')))
     g.selectAll('.tick line')
       .attr('style', `transform: translateY(${-yScale(0)}px)`)
       .attr('stroke', '#E1E1E1')
       .attr('stroke-dasharray', '2,2')
       .attr('y2', yScale(0));
+    g.select('.domain').remove();
   }
   setStyles() {
     const g = this.root;
@@ -297,39 +302,48 @@ class BottomAxis {
       .selectAll('text')
       .attr('transform', 'translate(-14,10)rotate(-90)')
       .style('text-anchor', 'end')
-    g.select('.domain').remove();
   }
-  getNode() {
-    return this.root.node();
+  redraw() {
+    this.setScale();
   }
 }
-class DataPath {
-  constructor(xScale, yScale, sizes, data, dataLine, defs) {
-    this.root = d3.create('svg:g');
-    this.data = data;
-    this.dataLine = dataLine;
-    this.sizes = sizes;
-    this.defs = defs;
-    this.setScale(xScale, yScale);
+class DataPath extends BaseChartElement {
+  constructor(data, chartState, dataLineField) {
+    super(data, chartState);
+
+    this.dataLineField = dataLineField;
+
+    this.lineNode = this.root.append('path');
+    this.areaNode = this.root.append('path');
+
     this.setStyles();
+    this.setScale();
   }
-  setScale(xScale, yScale) {
-    const line = d3.line().curve(d3.curveBumpX).x((d) => xScale(new Date(d.date))).y(d => yScale(d[this.dataLine.field]));
-    const area = d3.area().curve(d3.curveBumpX).x((d) => xScale(new Date(d.date))).y1(d => yScale(d[this.dataLine.field]));
-    area.y0(this.sizes.height);
-    this.root.append('path').attr('fill', `url(#g-${this.dataLine.field})`).attr('d', area(this.data));
-    this.root.append('path').datum(this.data).attr('stroke', this.dataLine.color).attr('stroke-width', '2px').attr('d', line).attr('fill', 'none');
+  setScale() {
+    const {sizes, xScale, yScale} = this.chartState;
+
+    this.line = d3.line().curve(d3.curveBumpX).x((d) => xScale(new Date(d.date))).y(d => yScale(d[this.dataLineField]));
+    this.area = d3.area().curve(d3.curveBumpX).x((d) => xScale(new Date(d.date))).y1(d => yScale(d[this.dataLineField]));
+    this.area.y0(sizes.height);
+
+    this.areaNode.attr('d', this.area(this.data));
+    this.lineNode.datum(this.data).attr('d', this.line);
   }
   setStyles() {
-    const gradient = this.defs.append('linearGradient').attr('id', 'g-' + this.dataLine.field).attr('gradientTransform', 'rotate(90)');
-    gradient.append('stop').attr('offset', '0%').attr('stop-color', this.dataLine.color).attr('stop-opacity', '0.15');
+    const dataLine = this.chartState.dataLines.find(d => d.field === this.dataLineField);
+    const { defsNode } = this.chartState;
+    const gradient = defsNode.append('linearGradient').attr('id', 'g-' + dataLine.field).attr('gradientTransform', 'rotate(90)');
+    gradient.append('stop').attr('offset', '0%').attr('stop-color', dataLine.color).attr('stop-opacity', '0.15');
     gradient.append('stop').attr('offset', '100%').attr('stop-color', 'white').attr('stop-opacity', '0.15');
+
+    this.areaNode.attr('fill', `url(#g-${dataLine.field})`);
+    this.lineNode.attr('stroke', dataLine.color).attr('stroke-width', '2px').attr('fill', 'none');
   }
-  getNode() {
-    return this.root.node();
+  redraw(data) {
+    this.data = data;
+    this.setScale();
   }
 }
-
 class DataLine {
     constructor(name, field, color) {
         this.name = name;
@@ -346,16 +360,11 @@ const dataLines = [
 const [min,max] = d3.extent(data, d => new Date(d.date).getHours());
 const delta = max - min;
 
-class Tooltip {
-  constructor(xScale, yScale, sizes, dataLines, dataWrapper, svg) {
-    this.root = d3.create('svg:g');
-    this.tooltipHeight = 52 + dataLines.length * 20 + dataLines.length * (4 - 1) + 16;
-    this.dataLines = dataLines;
-    this.dataWrapper = dataWrapper;
-    this.svg = svg;
-    this.sizes = sizes;
-    this.xScale = xScale;
-    this.yScale = yScale;
+class Tooltip extends BaseChartElement {
+  constructor(data, chartState) {
+    super(data, chartState);
+
+    this.tooltipHeight = 52 + chartState.dataLines.length * 20 + chartState.dataLines.length * (4 - 1) + 16;
     this.createTooltip();
     this.initEvent();
   }
@@ -363,7 +372,8 @@ class Tooltip {
     const yOffset = 14;
     const tooltipHeight = this.tooltipHeight;
     const tooltip = this.root.append('svg:g');
-    const dataLines = this.dataLines;
+
+    const { dataLines } = this.chartState;
     
     tooltip
       .style('opacity', '0')
@@ -380,7 +390,7 @@ class Tooltip {
     wrapG
       .append('path')
       .attr('d', 'M9.46326 13.3346C10.2583 14.223 11.649 14.223 12.444 13.3346L21.3937 3.33372C22.5466 2.0454 21.6322 0 19.9033 0H2.00392C0.275054 0 -0.639356 2.0454 0.513553 3.33372L9.46326 13.3346Z')
-      .attr('transform', `translate(${90},${tooltipHeight - 3})`) // 91 - половина ширины rect минус половина ширины ярлычка path
+      .attr('transform', `translate(${90},${ tooltipHeight - 3 })`) // 91 - половина ширины rect минус половина ширины ярлычка path
     wrapG
       .append('rect')
       .attr('rx', 6)
@@ -431,9 +441,9 @@ class Tooltip {
       x: 101,
       y: this.tooltipHeight + 11 + 16 // родной размер, 11 высота ярлычка и 16 отступ для точки
     };
-    const {yScale, xScale, sizes, dataWrapper} = this;
+    const {yScale, xScale, sizes, dataWrapperNode, svgNode} = this.chartState;
 
-    dataWrapper.on('mouseenter', m => {
+    dataWrapperNode.on('mouseenter', m => {
       this.tooltip
         .transition()
         .duration(250)
@@ -444,10 +454,10 @@ class Tooltip {
     });
 
     let lastSelectedData = null;
-    dataWrapper.on('mousemove', m => {
+    dataWrapperNode.on('mousemove', m => {
       const [x, y] = d3.pointer(m);
       const i = Math.round(x / sizes.width * delta);
-      const hoveredData = data[i];
+      const hoveredData = this.data[i];
 
       const xPos = xScale(new Date(hoveredData.date));
 
@@ -469,7 +479,7 @@ class Tooltip {
       }
       if(!lastSelectedData) {
           lastSelectedData = {
-              yTick: this.svg.select(`.bottom-axis .tick:nth-child(${i + 1})`),
+              yTick: svgNode.select(`.bottom-axis .tick:nth-child(${i + 1})`),
               i
           }
           lastSelectedData.yTick.classed('selected', true)
@@ -480,7 +490,7 @@ class Tooltip {
       });
     });
 
-    dataWrapper.on('mouseleave', () => {
+    dataWrapperNode.on('mouseleave', () => {
       this.tooltip
           .transition()
           .duration(250)
@@ -494,13 +504,14 @@ class Tooltip {
       }
     });
   }
-  getNode() {
-    return this.root.node();
+  redraw(data) {
+    this.data = data;
   }
 }
-class Legend {
-  constructor(dataLines, data) {
-    this.root = d3.create('div');
+class Legend extends BaseChartElement {
+  constructor(data, chartState) {
+    super(data, chartState);
+    this.root = d3.create('div'); // Legend является html элементом, а BaseChartElement создает svg элементы
 
     this.root.classed('c-chart-info', true);
     const legendGroup = this.root.append('div').classed('c-chart-info__wrap c-chart-info__wrap--small-size', true);
@@ -509,8 +520,8 @@ class Legend {
     this.totalElements = [];
     this.data = data;
 
-    legendGroup.selectAll('div').data(dataLines).enter().insert((d) => this.createLegend(d));
-    totalGroup.selectAll('div').data(dataLines).enter().insert((d) => {
+    legendGroup.selectAll('div').data(chartState.dataLines).enter().insert((d) => this.createLegend(d));
+    totalGroup.selectAll('div').data(chartState.dataLines).enter().insert((d) => {
       const { node, valueNode } = this.createTotal(d);
       this.totalElements.push({
         node: valueNode,
@@ -518,9 +529,8 @@ class Legend {
       });
       return node;
     });
-  }
-  getNode() {
-    return this.root.node();
+    
+    this.root.style('padding-left', chartState.sizes.left + 'px').style('padding-right', chartState.sizes.right + 'px');
   }
   redraw(data) {
     this.data = data;
@@ -558,16 +568,30 @@ class Legend {
   }
 }
 
+class ChartParamsGroup {
+  sizes;
+  yMax;
+  tickDividedBy;
+  dataLines;
+  dataWrapperNode;
+  svgNode;
+  xScale;
+  yScale;
+}
+
 class Chart {
   constructor(data, options = {}) {
     const chart = d3.select('#chart');
-
     const svg = chart.append('svg');
+
+    // ChartState просто группирует необходимые для чартов данные, чтобы не раздувать интерфейсы функций и конструкторов
+    const chartState = new ChartParamsGroup();
+    this.chartState = chartState;
 
     const sizes = {
       top: 22,
-      left: 51,
-      right: 8,
+      left: 86,
+      right: 34,
       bottom: 94,
       width: 0,
       height: 389,
@@ -576,27 +600,39 @@ class Chart {
     };
     sizes.width = sizes.totalWidth - sizes.left - sizes.right;
     sizes.totalHeight = sizes.height + sizes.top + sizes.bottom;
+    chartState.sizes = sizes;
 
     svg.attr('width', sizes.totalWidth + 'px');
     svg.attr('height', sizes.totalHeight + 'px');
+
+    this.data = data;
     this.calculateMax();
 
-    const { yMax } = this;
-
     const dataWrapper = d3.create('svg:g').style('transform', `translate(${ sizes.left }px,${ sizes.top }px)`);
+    chartState.dataWrapperNode = dataWrapper;
 
-    const yScale = d3.scaleLinear([0, yMax], [sizes.height,0]);
+    const yScale = d3.scaleLinear([0, chartState.yMax], [sizes.height,0]);
     const xScale = d3.scaleTime([new Date('2023-05-15T00:00:00+05:00'), new Date('2023-05-15T23:00:00+05:00')], [0, sizes.width]);
+
+    chartState.dataLines = options.dataLines;
+    chartState.xScale = xScale;
+    chartState.yScale = yScale;
+    chartState.svgNode = svg;
     
-    const bottomAxis = new BottomAxis(xScale, yScale, sizes);
-    const tooltip = new Tooltip(xScale, yScale, sizes, dataLines, dataWrapper, svg);
-    const legend = new Legend(dataLines, data);
-    const leftAxis = new LeftAxis(xScale, yScale, sizes, yMax, this.tickDividedBy);
+    const bottomAxis = new BottomAxis(data, chartState);
+    const tooltip = new Tooltip(data, chartState);
+    const legend = new Legend(data, chartState);
+    const leftAxis = new LeftAxis(data, chartState);
     
     const defs = svg.append('defs');
+    chartState.defsNode = defs;
+    
     dataWrapper.append('rect').attr('width', sizes.width).attr('height',sizes.height).attr('fill','transparent');
-    dataLines.forEach(d => {
-      const p = new DataPath(xScale, yScale, sizes, data, d, defs);
+
+    this.dataPaths = [];
+    options.dataLines.forEach(d => {
+      const p = new DataPath(data, chartState, d.field);
+      this.dataPaths.push(p);
       this.appendSingle(dataWrapper, () => p.getNode());
     });
     
@@ -607,29 +643,49 @@ class Chart {
     this.appendSingle(dataWrapper, () => tooltip.getNode());
 
     this.legend = legend;
+    this.leftAxis = leftAxis;
+    this.bottomAxis = bottomAxis;
+    this.tooltip = tooltip;
   }
   appendSingle(where, whatFn, prepend) {
     where.node()[prepend ? 'prepend' : 'append'](whatFn());
   }
   redraw(data) {
+    this.data = data;
+    this.calculateMax();
+
+    this.chartState.yScale
+      .domain([0, this.chartState.yMax])
+
+    this.leftAxis.redraw(data);
+    this.bottomAxis.redraw(data);
     this.legend.redraw(data);
+    this.dataPaths.forEach(d => d.redraw(data));
+    this.tooltip.redraw(data);
   }
   calculateMax() {
     let yMax = 0;
-    data.forEach(d => {
+    let tickDividedBy = 0;
+    
+    this.data.forEach(d => {
       yMax = Math.max(yMax, ...dataLines.map(s => d[s.field]));
     });
-    this.tickDividedBy = Math.ceil(yMax / 500) * 50;
-    yMax = Math.ceil(Math.round(yMax + yMax * 0.1) / this.tickDividedBy) * this.tickDividedBy;
+    let multiplyBy = 50;
+    if(yMax < 50) {
+      multiplyBy = 10;
+    }
+    tickDividedBy = Math.ceil(yMax / 500) * multiplyBy;
+    yMax = Math.ceil(Math.round(yMax + yMax * 0.1) / tickDividedBy) * tickDividedBy;
 
-    this.yMax = yMax;
+    this.chartState.tickDividedBy = tickDividedBy;
+    this.chartState.yMax = yMax;
   }
 }
 
-const chart = new Chart(data, {
-
+const chart = new Chart(data1, {
+  dataLines
 });
 
 setTimeout(() => {
-  chart.redraw(data1);
-}, 3000);
+  chart.redraw(data);
+}, 1000);
