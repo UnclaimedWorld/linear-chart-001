@@ -1,8 +1,18 @@
 {
-  "name": "linear-chart-001",
+  "name": "@unclaimedworld/linear-chart-001",
   "type": "module",
-  "description": "",
+  "description": "Simple d3 based linear chart",
+  "author": "Khalimov Damir Vladimirovich",
+  "license": "MIT",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UnclaimedWorld/linear-chart-001.git"
+  },
+  "bugs": {
+    "url": "https://github.com/UnclaimedWorld/linear-chart-001/issues"
+  },
+  "homepage": "https://github.com/UnclaimedWorld/linear-chart-001#readme",
   "main": "./dist/chart.umd.cjs",
   "module": "./dist/chart.js",
   "types": "./dist/index.d.ts",
@@ -18,16 +28,6 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/UnclaimedWorld/linear-chart-001.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/UnclaimedWorld/linear-chart-001/issues"
-  },
-  "homepage": "https://github.com/UnclaimedWorld/linear-chart-001#readme",
   "dependencies": {
     "d3": "^7.8.5"
   },
@@ -37,5 +37,6 @@
     "typescript": "^5.2.2",
     "vite": "^4.4.5",
     "vite-plugin-dts": "^3.6.0"
-  }
+  },
+  "files": ["dist"]
 }
