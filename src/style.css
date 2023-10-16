@@ -1,9 +1,12 @@
-
 .tick line {
   stroke: #E1E1E1;
 }
 .left-axis text {
   transform: translateX(-15px);
+}
+.bottom-axis text {
+  transform: translate(-14px ,10px) rotate(-90deg);
+  text-anchor: end;
 }
 .domain {
   stroke: none;
