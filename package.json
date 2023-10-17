@@ -15,11 +15,11 @@
   },
   "homepage": "https://github.com/UnclaimedWorld/linear-chart-001#readme",
   "main": "./dist/chart.umd.cjs",
-  "module": "./dist/chart.es.js",
+  "module": "./dist/chart.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/chart.es.js",
+      "import": "./dist/chart.js",
       "require": "./dist/chart.umd.cjs"
     }
   },
