@@ -19,7 +19,6 @@ class BaseChartElement {
   // @ts-ignore
   redraw(data: ChartData) {}
 }
-
 class LeftAxis extends BaseChartElement {
   constructor(data: ChartData, chartState: ChartState) {
     super(data, chartState);
@@ -164,7 +163,6 @@ class DataPath extends BaseChartElement {
     this.setScale();
   }
 }
-
 class Tooltip extends BaseChartElement {
   tooltipHeight;
   tooltip;

@@ -1,1 +1,2 @@
-export { default as Chart } from "./chart";
+export { default as Chart, DataLine } from "./chart";
+import './style.css';

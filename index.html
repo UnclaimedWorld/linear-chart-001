@@ -7,6 +7,42 @@
     <title>Vite + TS</title>
   </head>
   <body>
-    <script type="module" src="/src/index.ts"></script>
+    <div id="chart"></div>
+    <script type="module">
+      import { Chart, DataLine } from '/src/index.ts';
+      const element = document.querySelector('#chart');
+
+      const chart = new Chart([
+        {
+          date: 1,
+          value: 15
+        },
+        {
+          date: 2,
+          value: 31
+        },
+        {
+          date: 3,
+          value: 3
+        },
+        {
+          date: 4,
+          value: 25
+        }
+      ], {
+        dataLines: [
+          new DataLine('Входящие обращения', 'value', '#397AF5')
+        ],
+        element,
+        xAxis: {
+          getVisible(d) {
+            return d.date;
+          },
+          getData(d) {
+            return d.date
+          }
+        }
+      })
+    </script>
   </body>
 </html>

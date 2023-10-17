@@ -1,10 +1,11 @@
 {
-  "name": "@unclaimedworld/linear-chart-001",
+  "name": "simple-linear-chart-001",
   "type": "module",
   "description": "Simple d3 based linear chart",
   "author": "Khalimov Damir Vladimirovich",
   "license": "MIT",
   "version": "1.0.0",
+  "private": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/UnclaimedWorld/linear-chart-001.git"
@@ -14,11 +15,11 @@
   },
   "homepage": "https://github.com/UnclaimedWorld/linear-chart-001#readme",
   "main": "./dist/chart.umd.cjs",
-  "module": "./dist/chart.js",
+  "module": "./dist/chart.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/chart.js",
+      "import": "./dist/chart.es.js",
       "require": "./dist/chart.umd.cjs"
     }
   },
@@ -34,9 +35,16 @@
   "devDependencies": {
     "@types/d3": "^7.4.1",
     "@types/node": "^20.8.5",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "rollup-plugin-uglify": "^6.0.4",
     "typescript": "^5.2.2",
     "vite": "^4.4.5",
-    "vite-plugin-dts": "^3.6.0"
+    "vite-dts": "^1.0.4",
+    "vite-plugin-dts": "^3.5.0",
+    "vite-plugin-static-copy": "^0.17.0"
   },
-  "files": ["dist"]
+  "files": [
+    "dist"
+  ]
 }
